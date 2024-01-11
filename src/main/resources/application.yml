@@ -1,0 +1,8 @@
+hexagonal:
+  client:
+    address:
+      url: http://loclahost:8082/address
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/hexagonal
