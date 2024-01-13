@@ -5,6 +5,7 @@ import com.leonardo.heaxagonal.adpters.in.controller.request.CustomerRequest;
 import com.leonardo.heaxagonal.adpters.in.controller.response.CustomerResponse;
 import com.leonardo.heaxagonal.application.ports.in.FindCustomerByIdInputPort;
 import com.leonardo.heaxagonal.application.ports.in.InsertCustomerInputPort;
+import com.leonardo.heaxagonal.application.ports.in.UpdateCustomerInputPort;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class CustomerController {
     @Autowired
     private FindCustomerByIdInputPort findCustomerByIdInputPort;
 
+    @Autowired
+    private UpdateCustomerInputPort updateCustomerInputPort;
+
     @PostMapping
     public ResponseEntity<Void> insert(@RequestBody @Valid CustomerRequest customerRequest) {
         var customer = customerMapper.toCustomer(customerRequest);
@@ -35,5 +39,13 @@ public class CustomerController {
         var customer = findCustomerByIdInputPort.execute(id);
         var customerResponse = customerMapper.toCustomerResponse(customer);
         return ResponseEntity.ok(customerResponse);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid CustomerRequest customerRequest) {
+        var customer = customerMapper.toCustomer(customerRequest);
+        customer.setId(id);
+        updateCustomerInputPort.execute(customer, customerRequest.getZipCode());
+        return ResponseEntity.noContent().build();
     }
 }
