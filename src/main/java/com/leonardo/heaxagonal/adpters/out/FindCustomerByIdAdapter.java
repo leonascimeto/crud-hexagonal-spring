@@ -3,12 +3,14 @@ package com.leonardo.heaxagonal.adpters.out;
 import com.leonardo.heaxagonal.adpters.out.repository.CustomerRepository;
 import com.leonardo.heaxagonal.adpters.out.repository.mapper.CustomerEntityMapper;
 import com.leonardo.heaxagonal.application.core.domain.Customer;
-import com.leonardo.heaxagonal.application.ports.out.InsertCustomerOutputPort;
+import com.leonardo.heaxagonal.application.ports.out.FindCustomerByIdOutputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
-public class InsertCustomerAdpter implements InsertCustomerOutputPort {
+public class FindCustomerByIdAdapter implements FindCustomerByIdOutputPort {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -16,9 +18,12 @@ public class InsertCustomerAdpter implements InsertCustomerOutputPort {
     @Autowired
     private CustomerEntityMapper customerEntityMapper;
 
+    public FindCustomerByIdAdapter() {
+    }
+
     @Override
-    public void insert(Customer customer) {
-        var customerEntity = customerEntityMapper.toCustomerEntity(customer);
-        customerRepository.save(customerEntity);
+    public Optional<Customer> find(String id) {
+        var customerEntity = customerRepository.findById(id);
+        return customerEntity.map(entity -> customerEntityMapper.toCustomer(entity));
     }
 }
