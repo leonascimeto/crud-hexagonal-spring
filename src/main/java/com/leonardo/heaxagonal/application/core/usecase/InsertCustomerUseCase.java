@@ -4,6 +4,7 @@ import com.leonardo.heaxagonal.application.core.domain.Customer;
 import com.leonardo.heaxagonal.application.ports.in.InsertCustomerInputPort;
 import com.leonardo.heaxagonal.application.ports.out.FindAddressByZipCodeOutputPort;
 import com.leonardo.heaxagonal.application.ports.out.InsertCustomerOutputPort;
+import com.leonardo.heaxagonal.application.ports.out.SendCpfForValidationOutportPort;
 
 public class InsertCustomerUseCase implements InsertCustomerInputPort {
 
@@ -11,10 +12,16 @@ public class InsertCustomerUseCase implements InsertCustomerInputPort {
 
     private final InsertCustomerOutputPort insertCustomerOutputPort;
 
-    public InsertCustomerUseCase(FindAddressByZipCodeOutputPort findAddressByZipCodeOutputPort,
-                                 InsertCustomerOutputPort insertCustomerOutputPort) {
+    private final SendCpfForValidationOutportPort sendCpfForValidationOutportPort;
+
+    public InsertCustomerUseCase(
+            FindAddressByZipCodeOutputPort findAddressByZipCodeOutputPort,
+            InsertCustomerOutputPort insertCustomerOutputPort,
+            SendCpfForValidationOutportPort sendCpfForValidationOutportPort
+    ) {
         this.findAddressByZipCodeOutputPort = findAddressByZipCodeOutputPort;
         this.insertCustomerOutputPort = insertCustomerOutputPort;
+        this.sendCpfForValidationOutportPort = sendCpfForValidationOutportPort;
     }
 
     @Override
@@ -22,5 +29,6 @@ public class InsertCustomerUseCase implements InsertCustomerInputPort {
         var address = findAddressByZipCodeOutputPort.find(zipCode);
         customer.setAddress(address);
         insertCustomerOutputPort.insert(customer);
+        sendCpfForValidationOutportPort.send(customer.getCpf());
     }
 }
