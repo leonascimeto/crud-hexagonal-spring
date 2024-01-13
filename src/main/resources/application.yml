@@ -1,8 +1,17 @@
+server:
+  port: 8084
+
 hexagonal:
   client:
     address:
-      url: http://loclahost:8082/address
+      url: http://localhost:8082/addresses
+
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/hexagonal
+      host: localhost
+      port: 27017
+      authentication-database: admin
+      username: root
+      password: example
+      database: hexagonal

@@ -7,10 +7,11 @@ import com.leonardo.heaxagonal.application.ports.in.DeleteCustomerInputPort;
 import com.leonardo.heaxagonal.application.ports.in.FindCustomerByIdInputPort;
 import com.leonardo.heaxagonal.application.ports.in.InsertCustomerInputPort;
 import com.leonardo.heaxagonal.application.ports.in.UpdateCustomerInputPort;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/customers")

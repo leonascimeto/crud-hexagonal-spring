@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
         url = "${hexagonal.client.address.url}"
 )
 public interface FindAddressByZipCodeClient {
-    @GetMapping("/{zipCode")
+    @GetMapping("/{zipCode}")
     AddressResponse find(@PathVariable String zipCode);
 }
