@@ -3,6 +3,7 @@ package com.leonardo.heaxagonal.adpters.in.controller;
 import com.leonardo.heaxagonal.adpters.in.controller.mapper.CustomerMapper;
 import com.leonardo.heaxagonal.adpters.in.controller.request.CustomerRequest;
 import com.leonardo.heaxagonal.adpters.in.controller.response.CustomerResponse;
+import com.leonardo.heaxagonal.application.ports.in.DeleteCustomerInputPort;
 import com.leonardo.heaxagonal.application.ports.in.FindCustomerByIdInputPort;
 import com.leonardo.heaxagonal.application.ports.in.InsertCustomerInputPort;
 import com.leonardo.heaxagonal.application.ports.in.UpdateCustomerInputPort;
@@ -27,6 +28,9 @@ public class CustomerController {
     @Autowired
     private UpdateCustomerInputPort updateCustomerInputPort;
 
+    @Autowired
+    private DeleteCustomerInputPort deleteCustomerInputPort;
+
     @PostMapping
     public ResponseEntity<Void> insert(@RequestBody @Valid CustomerRequest customerRequest) {
         var customer = customerMapper.toCustomer(customerRequest);
@@ -48,4 +52,11 @@ public class CustomerController {
         updateCustomerInputPort.execute(customer, customerRequest.getZipCode());
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable final String id) {
+        deleteCustomerInputPort.execute(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
